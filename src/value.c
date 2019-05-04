@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "memory.h"
 #include "value.h"
 
@@ -24,4 +26,9 @@ void freeValueArray(ValueArray* array)
 {
   FREE_ARRAY(Value, array->values, array->capacity);
   initValueArray(array);
+}
+
+void printValue(Value value)
+{
+  printf("%g", value);
 }

@@ -11,6 +11,6 @@
 #define FREE_ARRAY(type, pointer, oldCount) \
   reallocate(pointer, sizeof(type) * oldCount, 0)
 
-void* reallocate(void *previous, size_t oldSize, size_t newSize);
+void* reallocate(void *previous, int oldSize, int newSize);
 
 #endif // clox_memory_h
