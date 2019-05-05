@@ -3,10 +3,9 @@
 
 #include "common.h"
 #include "value.h"
-#include "rle.h"
 
 typedef enum {
-  OP_RETURN,
+  OP_RETURN = 1,
   OP_CONSTANT 
 } OpCode;
 
@@ -14,14 +13,13 @@ typedef struct {
   int count;
   int capacity;
   uint8_t* code;
+  int* lines;
   ValueArray constants;
-  RLE rle;
 } Chunk;
 
 void initChunk(Chunk *chunk);
 void freeChunk(Chunk *chunk);
 void writeChunk(Chunk *chunk, uint8_t byte, int line);
 int addConstant(Chunk* chunk, Value value);
-int operandsCount(OpCode opcode);
 
 #endif // clox_chunk_h

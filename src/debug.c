@@ -20,18 +20,9 @@ void disassembleChunk(Chunk* chunk, const char* name)
 {
   printf("== %s == \n", name);
 
-  int count = 0;
   for(int offset = 0; offset < chunk->count;)
   {
-    chunk->rle.count = count;
     offset = disassembleInstruction(chunk, offset);
-    ++count;
-  }
-
-  int* lines = chunk->rle.lines;
-  int capacity = chunk->rle.capacity;
-  for(int i = 0; i < capacity; i++) {
-    printf("%d", lines[i]);
   }
 }
 
@@ -39,7 +30,7 @@ int disassembleInstruction(Chunk* chunk, int offset)
 {
   printf("%04d ", offset);
   uint8_t instruction = chunk->code[offset];
-  printf("%4d ", getLine(&chunk->rle, chunk->rle.count));
+  printf("%4d ", chunk->lines[offset]);
 
   switch(instruction)
   {
