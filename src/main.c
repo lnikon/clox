@@ -15,6 +15,12 @@ int main(int argc, char *argv[])
   writeChunk(&chunk, OP_CONSTANT, 1);
   writeChunk(&chunk, constant, 1);
 
+  writeChunk(&chunk, OP_CONSTANT, 1);
+  writeChunk(&chunk, constant, 1);
+
+  writeChunk(&chunk, OP_CONSTANT, 1);
+  writeChunk(&chunk, constant, 1);
+
   writeChunk(&chunk, OP_RETURN, 2);
 
   /*disassembleChunk(&chunk, "hey ho");*/
