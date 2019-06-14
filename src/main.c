@@ -15,13 +15,13 @@ int main(int argc, char *argv[])
   writeChunk(&chunk, OP_CONSTANT, 1);
   writeChunk(&chunk, constant, 1);
 
-  writeChunk(&chunk, OP_CONSTANT, 1);
-  writeChunk(&chunk, constant, 1);
+  constant = addConstant(&chunk, -32);
+  writeChunk(&chunk, OP_CONSTANT, 2);
+  writeChunk(&chunk, constant, 2);
 
-  writeChunk(&chunk, OP_CONSTANT, 1);
-  writeChunk(&chunk, constant, 1);
+  writeChunk(&chunk, OP_SUBSTRACT, 3);
 
-  writeChunk(&chunk, OP_RETURN, 2);
+  writeChunk(&chunk, OP_RETURN, 3);
 
   /*disassembleChunk(&chunk, "hey ho");*/
   interpret(&chunk);
