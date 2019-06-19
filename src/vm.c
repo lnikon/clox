@@ -2,6 +2,7 @@
 #include "value.h"
 #include "debug.h"
 #include "vm.h"
+#include "compiler.h"
 
 VM vm;
 
@@ -19,12 +20,23 @@ void freeVM()
 {
 }
 
-InterpretResult interpret(Chunk* chunk)
+InterpretResult interpret(const char* source)
 {
-  vm.chunk = chunk;
+  Chunk chunk;
+  initChunk(&chunk);
+
+  if(!compile(source, &chunk)) {
+    freeChunk(&chunk);
+    return INTERPRET_COMPILE_ERROR;
+  }
+
+  vm.chunk = &chunk;
   vm.ip = vm.chunk->code;
 
-  return run();
+  InterpretResult result = run();
+
+  freeChunk(&chunk);
+  return result;
 }
 
 InterpretResult run()
@@ -48,21 +60,24 @@ InterpretResult run()
       printf("]\n");
     }
     printf("--- end value stack ---\n");
-    disassembleInstruction(vm.chunk, (int)(vm.ip - vm.chunk->code));
+    // disassembleInstruction(vm.chunk, (int)(vm.ip - vm.chunk->code));
 #endif
     int8_t instruction;
-    switch(instruction = READ_BYTE()) {
+    instruction = READ_BYTE();
+    // printInstructionName(instruction);
+    switch(instruction) {
       case OP_CONSTANT: {
                           Value constant = READ_CONSTANT();
                           push(constant);
                           break;
                         }
-      case OP_ADD: BINARY_OP(+); break;
-      case OP_SUBSTRACT: BINARY_OP(-); break;
-      case OP_MULTIPLY: BINARY_OP(*); break;
-      case OP_DIVIDE:  BINARY_OP(/); break;
+      case OP_ADD: { BINARY_OP(+); break; }
+      case OP_SUBSTRACT: { BINARY_OP(-); break; }
+      case OP_MULTIPLY: { BINARY_OP(*); break; }
+      case OP_DIVIDE:  { BINARY_OP(/); break; }
       case OP_NEGATE: {
-                        printValue(-pop());
+                        // printValue(-pop());
+                        push(-pop());
                         break;
                       }
 
@@ -71,7 +86,7 @@ InterpretResult run()
                         printf("\n");
                         return INTERPRET_OK;
                       }
-
+      default: { printf("IN default\n"); break; }
     }
   }
 

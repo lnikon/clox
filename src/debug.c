@@ -10,7 +10,7 @@ static int simpleInstruction(const char* name, int offset)
 static int constantInstruction(const char* name, Chunk* chunk, int offset)
 {
   uint8_t constant = chunk->code[offset + 1];
-  printf("name: %-16s cnst: %4d '", name, constant);
+  printf("name: %-16s cnst_idx: %4d '", name, constant);
   printValue(chunk->constants.values[constant]);
   printf("'\n");
   return offset + 2;
@@ -54,3 +54,16 @@ int disassembleInstruction(Chunk* chunk, int offset)
   }
 }
 
+void printInstructionName(uint8_t byte) {
+  switch(byte)
+  {
+    case OP_CONSTANT: printf("OP_CONSTANT\n"); break;
+    case OP_ADD: printf("OP_ADD\n"); break;
+    case OP_SUBSTRACT: printf("OP_SUBSTRACT\n"); break;
+    case OP_MULTIPLY: printf("OP_MULTIPLY\n"); break;
+    case OP_DIVIDE: printf("OP_DIVIDE\n"); break;
+    case OP_NEGATE: printf("OP_NEGATE\n"); break;
+    case OP_RETURN: printf("OP_RETURN\n"); break;
+    default: printf("UNKOWN\n"); break;
+  }
+}
